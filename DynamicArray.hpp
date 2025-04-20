@@ -17,16 +17,20 @@ class DynamicArray
       checkAllocErr();
     }
 
-    T& operator[](size_t i)
-    {
-      if(i > n-1)
-        throw oobErr();
-
-      return mem[i];
-    }
-
+    T& operator[](size_t i){ return mem[i]; }
     const T& operator[](size_t i) const
     { return const_cast<DynamicArray&>(*this).operator[](i); }
+
+    T& At(size_t i)
+    {
+      if(i >= n)
+        throw oobErr();
+
+      return operator[](i);
+    }
+
+    T& At(size_t i) const
+    { return const_cast<DynamicArray&>(*this).At(i); }
 
     template <typename U>
     void Append(U&& elem) 
