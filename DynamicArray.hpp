@@ -4,6 +4,7 @@
 #include <cerrno>
 #include <cstring>
 #include <stdexcept>
+#include <type_traits>
 
 template <typename T>
 class DynamicArray
@@ -14,6 +15,9 @@ class DynamicArray
       cap{n == 0 ? 32 : n*2}, 
       mem{ static_cast<T*>(std::malloc(cap*sizeof(T))) }
     {
+      //TODO: support non trivially copyable types 
+      static_assert(std::is_trivially_copyable<T>::value,
+          "DynamicArray only works with trivially copyable types currently.");
       checkAllocErr();
     }
 
