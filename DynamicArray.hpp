@@ -77,13 +77,13 @@ class DynamicArray
       checkAllocErr();
     }
 
-    void checkAllocErr()
+    void checkAllocErr() const
     {
       if(!mem)
         throw std::runtime_error{std::strerror(errno)};
     }
 
-    std::runtime_error oobErr()
+    std::runtime_error oobErr() const
     {
       return std::runtime_error{"out of bounds"};
     }
