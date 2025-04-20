@@ -28,9 +28,14 @@ class DynamicArray
     const T& operator[](size_t i) const
     { return const_cast<DynamicArray&>(*this).operator[](i); }
 
-    void Append(const T& elem) { Insert(n, elem); }
+    template <typename U>
+    void Append(U&& elem) 
+    { 
+      Insert(n, std::forward<U>(elem));
+    }
 
-    void Insert(size_t i, const T& elem)
+    template <typename U>
+    void Insert(size_t i, U&& elem)
     {
       if(i > n)
         throw oobErr();
@@ -41,7 +46,7 @@ class DynamicArray
       std::memmove(&mem[i+1], &mem[i], (n-i)*sizeof(T));
 
       ++n;
-      operator[](i) = elem;
+      new(&mem[i]) T{ std::forward<U>(elem) };
     }
 
     void Delete(size_t i)
