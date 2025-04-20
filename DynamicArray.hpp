@@ -66,6 +66,9 @@ class DynamicArray
 
     ~DynamicArray()
     {
+      while(n > 0)
+        operator[](--n).~T();
+
       std::free(mem);
     }
 
